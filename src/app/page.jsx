@@ -1,6 +1,5 @@
 'use client'
 import {useEffect, useState} from "react";
-import LinearProgress from '@mui/material/LinearProgress';
 import {CircularProgress} from "@mui/material";
 
 // @ts-nocheck
@@ -91,7 +90,7 @@ export default function Home() {
 
             console.log(data)
 
-            const tracks = data.items.map((info: any) => {
+            const tracks = data.items.map((any) => {
                 const track = info.track;
                 return track;
             })
@@ -150,7 +149,7 @@ export default function Home() {
                 console.log('found next tracks')
                 const data = await response.json();
 
-                const next_tracks = data.items.map((info: any) => {
+                const next_tracks = data.items.map((any) => {
                     const track = info.track;
                     return track;
                 })
@@ -190,7 +189,7 @@ export default function Home() {
                 const data = await response.json();
                 // console.log(data)
 
-                const next_tracks = data.items.map((info: any) => {
+                const next_tracks = data.items.map((any) => {
                     const track = info.track;
                     return track;
                 })
