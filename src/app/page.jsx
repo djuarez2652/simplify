@@ -91,7 +91,7 @@ export default function Home() {
 
             console.log(data)
 
-            const tracks = data.items.map((any) => {
+            const tracks = data.items.map((info) => {
                 const track = info.track;
                 return track;
             })
@@ -150,7 +150,7 @@ export default function Home() {
                 console.log('found next tracks')
                 const data = await response.json();
 
-                const next_tracks = data.items.map((any) => {
+                const next_tracks = data.items.map((info) => {
                     const track = info.track;
                     return track;
                 })
@@ -190,7 +190,7 @@ export default function Home() {
                 const data = await response.json();
                 // console.log(data)
 
-                const next_tracks = data.items.map((any) => {
+                const next_tracks = data.items.map((info) => {
                     const track = info.track;
                     return track;
                 })
