@@ -5,10 +5,10 @@ import {CircularProgress} from "@mui/material";
 // @ts-nocheck
 export default function Home() {
 
-    const [accessToken, setAccessToken] = useState<string>("");
+    const [accessToken, setAccessToken] = useState("");
     const [tracks, setTracks] = useState([[]]);
     const [page, setPage] = useState(0);
-    const [nextSongs, setNextSongs] = useState<string>("");
+    const [nextSongs, setNextSongs] = useState("");
     const [initData, setInitData] = useState({});
     const [pagesLoaded, setPagesLoaded] = useState(0);
     const [userData, setUserData] = useState({});
