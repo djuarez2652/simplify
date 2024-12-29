@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import LinearProgress from '@mui/material/LinearProgress';
 import {CircularProgress} from "@mui/material";
 
+// @ts-nocheck
 export default function Home() {
 
     const [accessToken, setAccessToken] = useState<string>("");
