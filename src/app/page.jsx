@@ -19,7 +19,8 @@ export default function Home() {
     const handleAuthorization = () => {
         let url = "https://accounts.spotify.com/authorize";
         const client_id = process.env.NEXT_PUBLIC_CLIENT_ID || "";
-        const redirect_uri = "http://localhost:3000/";
+        // const redirect_uri = "http://localhost:3000/";
+        const redirect_uri = "https://simplify-9ge6y266i-david-juarezs-projects.vercel.app/";
         const scope = "user-read-private user-read-email user-library-read playlist-modify-public";
 
         url += "?response_type=token";
