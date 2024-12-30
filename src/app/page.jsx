@@ -2,7 +2,6 @@
 import {useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
 
-// @ts-nocheck
 export default function Home() {
 
     const [accessToken, setAccessToken] = useState("");
@@ -19,7 +18,6 @@ export default function Home() {
     const handleAuthorization = () => {
         let url = "https://accounts.spotify.com/authorize";
         const client_id = process.env.NEXT_PUBLIC_CLIENT_ID || "";
-        // const redirect_uri = "http://localhost:3000/";
         const redirect_uri = "https://simplify-chi.vercel.app/";
         const scope = "user-read-private user-read-email user-library-read playlist-modify-public";
 
@@ -28,8 +26,6 @@ export default function Home() {
         url += "&scope=" + encodeURIComponent(scope);
         url += "&redirect_uri=" + encodeURIComponent(redirect_uri);
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
         window.location = url;
 
     }
@@ -44,7 +40,6 @@ export default function Home() {
 
         if (resposne.status === 200) {
             const data = await resposne.json();
-            console.log('user', data);
             setUserData(data);
         }
     }
@@ -88,8 +83,6 @@ export default function Home() {
 
         if (response.status === 200) {
             const data = await response.json();
-
-            console.log(data)
 
             const tracks = data.items.map((info) => {
                 const track = info.track;
@@ -138,7 +131,6 @@ export default function Home() {
 
     const fetchNextSongs = async () => {
         if (pagesLoaded - page < 2) {
-            console.log('next songs')
             const response = await fetch(nextSongs, {
                 method: "GET",
                 headers: {
@@ -147,7 +139,6 @@ export default function Home() {
             })
 
             if (response.status === 200) {
-                console.log('found next tracks')
                 const data = await response.json();
 
                 const next_tracks = data.items.map((info) => {
@@ -155,19 +146,12 @@ export default function Home() {
                     return track;
                 })
 
-                console.log('next tracks are', next_tracks)
-
                 setTracks(prev => [...prev, ...reorderTracks(next_tracks)]);
                 setNextSongs(data.next);
                 setPagesLoaded(prev => prev + Math.ceil(next_tracks.length/10));
             }
         }
     }
-
-    useEffect(() => {
-        console.log(nextSongs);
-    }, [nextSongs]);
-
 
     const fetchRestOfSongs = async () => {
         let nextLink = nextSongs;
@@ -177,7 +161,6 @@ export default function Home() {
             if (count % 10 == 0) {
                 await new Promise(r => setTimeout(r, 10));
             }
-            console.log('checking', nextLink);
             const response = await fetch(nextLink, {
                 method: "GET",
                 headers: {
@@ -186,53 +169,26 @@ export default function Home() {
             })
 
             if (response.status === 200) {
-                // console.log('found next tracks')
                 const data = await response.json();
-                // console.log(data)
 
                 const next_tracks = data.items.map((info) => {
                     const track = info.track;
                     return track;
                 })
 
-                // console.log('next tracks are', next_tracks)
-
                 newTracks = [...newTracks, ...reorderTracks(next_tracks)];
                 nextLink = data.next;
                 setOffset((data.offset/data.total) * 100)
             }
         }
-        console.log('new length', newTracks.length);
         setTracks(newTracks);
         return newTracks
     }
 
-    useEffect(() => {
-        console.log('update off', offset)
-    }, [offset]);
-
     const handleImport = async () => {
 
-        // console.log('getting the rest of the songs')
-        //
-        // let count = page;
-        // while (nextSongs) {
-        //     if (count > 200) break;
-        //     console.log('got batch', count, tracks)
-        //     count += 1
-        //     fetchNextSongs();
-        //     // console.log('next songs', nextSongs)
-        // }
-
-        // const flatten = tracks.reduce((acc, list) => acc.concat(list), []);
-        // console.log('flatten', flatten, initData.total);
         const all_tracks = await fetchRestOfSongs();
 
-        console.log('finished getting tracks')
-        console.log('total batches are', all_tracks.length);
-
-
-        console.log('creating playlist', playlistName, 'for', userData.id);
         const response = await fetch(`https://api.spotify.com/v1/users/${userData.id}/playlists`, {
             method: "POST",
             headers: {
@@ -247,7 +203,6 @@ export default function Home() {
 
         if (response.status === 201) {
             const data = await response.json();
-            console.log('playlist data', data);
             setPlaylistName("")
 
 
@@ -256,8 +211,6 @@ export default function Home() {
             for (let i = 0; i < Math.ceil(flatten.length / 100); i++) {
                 const uris = flatten.map(track => track.uri).slice(i, i+100);
 
-                console.log('uris uploaded', uris);
-                console.log('adding songs')
                 const res = await fetch(`https://api.spotify.com/v1/playlists/${data.id}/tracks`, {
                     method: "POST",
                     headers: {
@@ -269,22 +222,16 @@ export default function Home() {
                     })
                 })
 
-                if (res.status === 201) {
-                    console.log('added 100 songs')
-                } else {
-                    console.log('failed to add songs')
+                if (res.status !== 201) {
+                    console.error('failed to add 100 songs')
                 }
             }
 
             setLink(data.external_urls.spotify)
         } else {
-            console.log('playlist creation error', response.status);
+            console.error('playlist creation error', response.status);
         }
     }
-
-    useEffect(() => {
-        console.log(userData)
-    }, [userData]);
 
     return (
         <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
