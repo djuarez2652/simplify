@@ -19,6 +19,7 @@ export default function Home() {
         let url = "https://accounts.spotify.com/authorize";
         const client_id = process.env.NEXT_PUBLIC_CLIENT_ID || "";
         const redirect_uri = "https://simplify-chi.vercel.app/";
+        // const redirect_uri = "http://localhost:3000/";
         const scope = "user-read-private user-read-email user-library-read playlist-modify-public";
 
         url += "?response_type=token";
@@ -301,10 +302,9 @@ export default function Home() {
                     </div>
                 }
             </main>
-            <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-
+            <footer className="row-start-3 flex flex-col gap-6 flex-wrap items-center justify-center">
                 {
-                    tracks.length > 0 &&
+                    tracks[0].length > 0 &&
                     <div
                         className="flex flex-col gap-4 items-center"
                     >
@@ -335,8 +335,15 @@ export default function Home() {
                                 Open Playlist
                             </a>
                         }
+
+
                     </div>
                 }
+                <p
+                    className="text-sm sm:text-base"
+                >
+                    Created by David Juarez.
+                </p>
             </footer>
         </div>
     );
